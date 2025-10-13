@@ -215,7 +215,8 @@ $config['directory_trigger'] = 'd';
 | your log files will fill up very fast.
 |
 */
-$config['log_threshold'] = 1;
+// Set higher logging in development, minimal in production (handled by index.php ENVIRONMENT)
+$config['log_threshold'] = (ENVIRONMENT === 'development') ? 4 : 1;
 
 /*
 |--------------------------------------------------------------------------
