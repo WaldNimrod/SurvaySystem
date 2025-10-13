@@ -1,0 +1,8 @@
+.DS_Store
+Backup/
+SurvayApp/**/_backup/**
+SurvayApp/**/application/logs/*
+!SurvayApp/**/application/logs/index.html
+SurvayApp/**/phpinfo.php
+SurvayApp/**/databases/*.sql
+SurvayApp/**/pics/company-logos/**
