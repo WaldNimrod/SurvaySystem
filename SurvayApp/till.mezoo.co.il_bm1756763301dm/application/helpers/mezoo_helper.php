@@ -100,3 +100,19 @@ function fix_link($link)
     return (str_replace('127.0.0.1', 'localhost',
         str_replace('185.37.151.145', @$frag, $link)));
 }
+
+/**
+ * Sanitize a scalar value to be safe for CSV cells (mitigate formula injection in spreadsheet apps)
+ * - If the value starts with =, +, -, @ it will be prefixed with a single quote
+ */
+function sanitize_for_csv_cell($value)
+{
+    if (is_string($value)) {
+        $trimmed = ltrim($value);
+        if (preg_match('/^[=+\-@]/', $trimmed) === 1) {
+            return "'" . $value;
+        }
+        return $value;
+    }
+    return $value;
+}

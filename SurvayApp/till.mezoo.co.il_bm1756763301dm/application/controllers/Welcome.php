@@ -553,7 +553,8 @@ class Welcome extends CI_Controller
             $out[] = $tmp;
         }
 
-        $final = array_merge(array(array_keys($tmp)), $out);
+            // Header row
+            $final = array_merge(array(array_keys($tmp)), $out);
         $output = fopen("php://output", 'w');
         header('Content-Encoding: UTF-8');
         header('Content-type: text/csv; charset=UTF-8');
@@ -562,7 +563,11 @@ class Welcome extends CI_Controller
 
 
         foreach ($final as $row) {
-            fputcsv($output, $row);
+            $sanitized = array();
+            foreach ($row as $cell) {
+                $sanitized[] = sanitize_for_csv_cell((string)$cell);
+            }
+            fputcsv($output, $sanitized);
         }
         fclose($output);
     }
