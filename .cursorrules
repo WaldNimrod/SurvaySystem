@@ -1,0 +1,29 @@
+# כללי עבודה ב‑Cursor עבור פרויקט SurvaySystem
+
+## הפעלה/כיבוי סביבת פיתוח מקומית
+- הרמת DB ב‑Docker (רק כשעובדים):
+  - cd SurvayApp/docker
+  - docker compose up -d
+- משתני סביבה לחיבור DB (ניתן להוסיף ל‑~/.zshrc או להפעיל בכל סשן):
+  - export MEZOO_DB_HOST=127.0.0.1
+  - export MEZOO_DB_PORT=3307
+  - export MEZOO_DB_USER=root
+  - export MEZOO_DB_PASS=root
+  - export MEZOO_DB_NAME=mezoo
+- הרמת שרת PHP מקומי:
+  - SurvayApp/tools/start_local.sh
+- כתובת עבודה:
+  - http://localhost:8000/welcome/login
+- בדיקת Smoke (אופציונלי):
+  - BASE_URL="http://localhost:8000" SurvayApp/tests/smoke/smoke.sh
+- כיבוי בסיום עבודה:
+  - SurvayApp/tools/stop_local.sh
+  - cd SurvayApp/docker && docker compose down
+
+## הנחיות Git
+- אין לבצע git add/commit/push באופן אוטומטי.
+- לבצע commit/push רק לאחר בקשה מפורשת מהמשתמש.
+
+## שונות
+- ניתן לקנפג DB חלופי ע"י משתני סביבה (MEZOO_DB_*), ללא שינוי קבצי קונפיג.
+- דוקומנטציה תפעולית: SurvayApp/docs/operations.md
