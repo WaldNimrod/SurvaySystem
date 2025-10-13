@@ -269,29 +269,59 @@ class Welcome extends CI_Controller
     public function login()
     {
         $error = false;
+        // Simple rate limit: 5 attempts per 10 minutes per session+username
+        $maxAttempts = 5;
+        $windowSeconds = 600;
+        if (!isset($_SESSION['login_attempts'])) {
+            $_SESSION['login_attempts'] = array();
+        }
         if ($this->input->post('username') && $this->input->post('password')) {
-            $company = $this->company_m->get_by(array(
-                'login' => $this->input->post('username'),
-                'password' => $this->input->post('password')
+            $username = $this->input->post('username');
+            if (!isset($_SESSION['login_attempts'][$username])) {
+                $_SESSION['login_attempts'][$username] = array();
+            }
+            // purge old attempts
+            $_SESSION['login_attempts'][$username] = array_values(array_filter(
+                $_SESSION['login_attempts'][$username],
+                function ($ts) use ($windowSeconds) { return ($ts + $windowSeconds) > time(); }
             ));
-            if (!$company) {
+            if (count($_SESSION['login_attempts'][$username]) >= $maxAttempts) {
                 $error = true;
-                $this->log_m->insert(array(
-                    'username' => $this->input->post('username'),
-                    'created' => @date('Y-m-d H:i:s'),
-                    'result' => 'No'
-                ));
             } else {
-                if (!$company['lastPasswordChange']) {
-                    $this->company_m->update($company['id'], array('lastPasswordChange' => time()));
+                $company = $this->company_m->get_by(array('login' => $username));
+                $password = $this->input->post('password');
+                $ok = false;
+                if ($company) {
+                    // Support both hashed and legacy plaintext; migrate on success
+                    if (isset($company['password']) && preg_match('/^\$2y\$/', (string)$company['password'])) {
+                        $ok = password_verify($password, $company['password']);
+                    } else {
+                        $ok = ((string)$company['password'] === (string)$password);
+                        if ($ok) {
+                            $this->company_m->update($company['id'], array('password' => password_hash($password, PASSWORD_BCRYPT)));
+                        }
+                    }
                 }
-                $this->log_m->insert(array(
-                    'username' => $this->input->post('username'),
-                    'created' => @date('Y-m-d H:i:s'),
-                    'result' => 'Yes'
-                ));
-                $this->session->set_userdata('currentUser', $company['id']);
-                redirect(fix_link(site_url('welcome/admin')));
+                if (!$ok) {
+                    $error = true;
+                    $_SESSION['login_attempts'][$username][] = time();
+                    $this->log_m->insert(array(
+                        'username' => $username,
+                        'created' => @date('Y-m-d H:i:s'),
+                        'result' => 'No'
+                    ));
+                } else {
+                    if (!$company['lastPasswordChange']) {
+                        $this->company_m->update($company['id'], array('lastPasswordChange' => time()));
+                    }
+                    $this->log_m->insert(array(
+                        'username' => $username,
+                        'created' => @date('Y-m-d H:i:s'),
+                        'result' => 'Yes'
+                    ));
+                    $this->session->set_userdata('currentUser', $company['id']);
+                    redirect(fix_link(site_url('welcome/admin')));
+                }
             }
         }
         $this->load->view('admin_template', array('view' => 'admin/login', 'error' => $error));
@@ -545,8 +575,13 @@ class Welcome extends CI_Controller
 
     public function changePassword()
     {
-
-        $this->company_m->update($this->session->userdata('currentUser'), array('lastPasswordChange' => time(), 'password' => file_get_contents('php://input')));
+        $raw = trim((string)file_get_contents('php://input'));
+        if ($raw !== '') {
+            $this->company_m->update($this->session->userdata('currentUser'), array(
+                'lastPasswordChange' => time(),
+                'password' => password_hash($raw, PASSWORD_BCRYPT)
+            ));
+        }
     }
 
 }
