@@ -484,69 +484,87 @@ class Welcome extends CI_Controller
 
     private function _getQuery()
     {
-        if ($this->input->get('sortKey')) {
-            $_GET['sortKey'] = $this->input->get('sortKey');
-        } else {
-            $_GET['sortKey'] = 'created';
-        }
-        if ($this->input->get('sortOrder')) {
-            $_GET['sortOrder'] = $this->input->get('sortOrder');
-        } else {
-            $_GET['sortOrder'] = 'desc';
-        }
-        $where = array();
+        // Determine sorting in a safe, whitelisted manner
+        $sortKey = $this->input->get('sortKey') ? $this->input->get('sortKey') : 'created';
+        $sortOrder = strtolower($this->input->get('sortOrder')) === 'asc' ? 'asc' : 'desc';
+
+        // Map allowed sort keys to real column names
+        $sortMap = array(
+            'feedbackId' => 'feedbacks.id',
+            'divisionName' => 'divisions.name',
+            'firstName' => 'FirstName.val',
+            'lastName' => 'LastName.val',
+            'candidateId' => 'CandidateID.val',
+            'idNumber' => 'IDNumber.val',
+            'created' => 'feedbacks.created'
+        );
+        $sortColumn = isset($sortMap[$sortKey]) ? $sortMap[$sortKey] : 'feedbacks.created';
+
+        // Build query using Query Builder to avoid SQL injection
+        $this->db->select('responders.id as responderId');
+        $this->db->select('feedbacks.id as feedbackId');
+        $this->db->select('feedbacks.finalGroup as finalGroup');
+        $this->db->select('feedbacks.fileName as fileName');
+        $this->db->select('feedbacks.socialDes as socialDes');
+        $this->db->select('feedbacks.remarks as remarks');
+        $this->db->select('responders.divisionId as divisionId');
+        $this->db->select('feedbacks.json as json');
+        $this->db->select('divisions.name as divisionName');
+        $this->db->select('divisions.companyId as companyId');
+        $this->db->select('companies.login as companyName');
+        $this->db->select('feedbacks.created as created');
+        $this->db->select('IDNumber.val as idNumber');
+        $this->db->select('FirstName.val as firstName');
+        $this->db->select('LastName.val as lastName');
+        $this->db->select('CandidateID.val as candidateId');
+        $this->db->select('feedbacks.rowData as rowData');
+
+        $this->db->from('feedbacks');
+        $this->db->join('responders', 'responders.id = feedbacks.responderId');
+        $this->db->join('divisions', 'responders.divisionId = divisions.id');
+        $this->db->join('companies', 'divisions.companyId = companies.id');
+        $this->db->join('responderextradatas as IDNumber', "responders.id = IDNumber.responderId AND IDNumber.paramName = 'PD_IDNumber'");
+        $this->db->join('responderextradatas as FirstName', "responders.id = FirstName.responderId AND FirstName.paramName = 'PD_firstName'");
+        $this->db->join('responderextradatas as LastName', "responders.id = LastName.responderId AND LastName.paramName = 'PD_lastName'");
+        $this->db->join('responderextradatas as CandidateID', "responders.id = CandidateID.responderId AND CandidateID.paramName = 'PD_candidateID'");
+
+        // Filters
         if ($this->input->get('company')) {
-            $where[] = 'companyId = ' . $this->input->get('company');
+            $this->db->where('divisions.companyId', (int)$this->input->get('company'));
         }
         if ($this->input->get('division')) {
-            $where[] = 'divisionId = ' . $this->input->get('division');
+            $this->db->where('responders.divisionId', (int)$this->input->get('division'));
         }
-        if ($this->input->get('socialDes')) {
-            $where[] = 'feedbacks.socialDes = \'' . $this->input->get('socialDes') . '\'';
+        if ($this->input->get('socialDes') !== null && $this->input->get('socialDes') !== '') {
+            $this->db->where('feedbacks.socialDes', $this->input->get('socialDes'));
         }
-        if ($this->input->get('finalGroup')) {
-            $where[] = 'feedbacks.finalGroup = \'' . $this->input->get('finalGroup') . '\'';
+        if ($this->input->get('finalGroup') !== null && $this->input->get('finalGroup') !== '') {
+            $this->db->where('feedbacks.finalGroup', $this->input->get('finalGroup'));
         }
         if ($this->input->get('daterange')) {
             $split = explode(' - ', $this->input->get('daterange'));
             $from = @strtotime($split[0]);
             $to = @strtotime($split[1]) + (60 * 60 * 24);
-            $where[] = 'created BETWEEN ' . $from . ' AND ' . $to;
+            if ($from && $to) {
+                $this->db->where('feedbacks.created >=', $from);
+                $this->db->where('feedbacks.created <=', $to);
+            }
         }
         if ($this->input->get('freetext')) {
-            $where[] = '(FirstName.val LIKE \'%' . $this->input->get('freetext') . '%\' OR LastName.val LIKE \'%' . $this->input->get('freetext') . '%\' OR IDNumber.val LIKE \'%' . $this->input->get('freetext') . '%\')';
+            $text = $this->input->get('freetext');
+            $this->db->group_start();
+            $this->db->like('FirstName.val', $text);
+            $this->db->or_like('LastName.val', $text);
+            $this->db->or_like('IDNumber.val', $text);
+            $this->db->group_end();
         }
-        return '
-                SELECT
-                    responders.id as responderId,
-                    feedbacks.id as feedbackId,
-                    feedbacks.finalGroup as finalGroup,
-                    feedbacks.fileName as fileName,
-                    feedbacks.socialDes as socialDes,
-                    feedbacks.remarks as remarks,
-                    responders.divisionId as divisionId,
-                    feedbacks.json as json,
-                    divisions.name as divisionName,
-                    divisions.companyId as companyId,
-                    companies.login as companyName,
-                    feedbacks.created as created,
-                    IDNumber.val as idNumber,
-                    FirstName.val as firstName,
-                    LastName.val as lastName,
-                    CandidateID.val as candidateId,
-                    feedbacks.rowData as rowData
-                FROM feedbacks
-                    INNER JOIN responders ON responders.id = feedbacks.responderId
-                    INNER JOIN divisions ON responders.divisionId = divisions.id
-                    INNER JOIN companies ON divisions.companyId = companies.id
-                    INNER JOIN responderextradatas as IDNumber ON responders.id = IDNumber.responderId AND IDNumber.paramName = \'PD_IDNumber\'
-                    INNER JOIN responderextradatas as FirstName ON responders.id = FirstName.responderId AND FirstName.paramName = \'PD_firstName\'
-                    INNER JOIN responderextradatas as LastName ON responders.id = LastName.responderId AND LastName.paramName = \'PD_lastName\'
-                    INNER JOIN responderextradatas as CandidateID ON responders.id = CandidateID.responderId AND CandidateID.paramName = \'PD_candidateID\'
-                ' . (count($where) > 0 ? 'WHERE ' . implode(' AND ', $where) : '') . '
-                ORDER BY ' . $_GET['sortKey'] . ' ' . $_GET['sortOrder'] . '
 
-            ';
+        $this->db->order_by($sortColumn, $sortOrder);
+
+        // Return compiled SQL string to keep current call-site intact
+        $sql = $this->db->get_compiled_select();
+        $this->db->reset_query();
+        return $sql;
     }
 
     public function export()
