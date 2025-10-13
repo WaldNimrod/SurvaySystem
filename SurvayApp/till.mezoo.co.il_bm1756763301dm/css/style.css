@@ -1,0 +1,105 @@
+@charset "utf-8";
+/* CSS Document */
+
+body {
+	font: 100%/1.4 Verdana, Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	background: #42413C;
+	margin: 0;
+	padding: 0;
+	color: #000;
+	direction:rtl;
+}
+
+/* ~~ Element/tag selectors ~~ */
+ul, ol, dl { /* Due to variations between browsers, it's best practices to zero padding and margin on lists. For consistency, you can either specify the amounts you want here, or on the list items (LI, DT, DD) they contain. Remember that what you do here will cascade to the .nav list unless you write a more specific selector. */
+	padding: 0;
+	margin: 0;
+}
+h1, h2, h3, h4, h5, h6, p {
+	margin-top: 0;
+	margin-bottom:0;	 /* removing the top margin gets around an issue where margins can escape from their containing div. The remaining bottom margin will hold it away from any elements that follow. */
+	padding-right: 15px;
+	padding-left: 15px;
+	padding-bottom:5px; /* adding the padding to the sides of the elements within the divs, instead of the divs themselves, gets rid of any box model math. A nested div with side padding can also be used as an alternate method. */
+}
+h4 {text-decoration:underline}
+td, table {
+	border-top-width: 1px;
+	border-right-width: 1px;
+	border-bottom-width: 1px;
+	border-left-width: 1px;
+	border-top-style: solid;
+	border-right-style: none;
+	border-bottom-style: solid;
+	border-left-style: none;
+	border-top-color: #003;
+	border-right-color: #003;
+	border-bottom-color: #003;
+	border-left-color: #003;
+}
+
+h1, h3 {text-align:center}
+a img { /* this selector removes the default blue border displayed in some browsers around an image when it is surrounded by a link */
+	border: none;
+}
+/* ~~ Styling for your site's links must remain in this order - including the group of selectors that create the hover effect. ~~ */
+a:link {
+	color: #3300FF;
+	text-decoration: underline; /* unless you style your links to look extremely unique, it's best to provide underlines for quick visual identification */
+}
+a:visited {
+	color: #336699;
+	text-decoration: underline;
+}
+a:hover, a:active, a:focus { /* this group of selectors will give a keyboard navigator the same hover experience as the person using a mouse. */
+	text-decoration: none;
+}
+
+/* ~~ this fixed width container surrounds the other divs ~~ */
+.container {
+	width: 850px;
+	background: #FFF; /* the auto value on the sides, coupled with the width, centers the layout */
+	margin-top: 0;
+	margin-right: auto;
+	margin-bottom: 0;
+	margin-left: auto;
+}
+
+/* ~~ the header is not given a width. It will extend the full width of your layout. It contains an image placeholder that should be replaced with your own linked logo ~~ */
+.header {
+	
+}
+
+
+.content {
+
+	padding: 10px 0;
+}
+
+.footer {
+	padding: 10px 0;
+	background: #CCC49F;
+}
+
+.PersonalData{margin-right:30px; width:60%}
+.ParamContainer{
+	border:#000066 solid;
+	width:700px;
+	height:100px;
+	position:inherit;
+	top:0px;
+	left:-60px;
+	margin-bottom:20px;
+}
+.SliderContainer{position:absolute; z-index:2; top:25px; left:150px}
+.Slider_Arrow{position:absolute; z-index:4; top:35px; left:300px}
+.ParamLeftText{position:absolute; top:0px; left:10px; width:120px; height:100px;display:table}
+.ParamRightText{position:absolute; top:0px; left:550px; width:120px; height:100px;display:table}
+.ParamText {display:table-cell; vertical-align:middle; padding:0px; margin:0px}
+
+.RedText{font-weight:bold; color:#990000}
+.BlueText{
+	font-weight:bold;
+	color:#000099
+}
