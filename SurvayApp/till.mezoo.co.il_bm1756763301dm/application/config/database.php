@@ -74,24 +74,47 @@ $active_group = 'default';
 
 
 $query_builder = true;
-if ($_SERVER['HTTP_HOST'] === 'mhkl.mezoo.co.il') {
+$host = isset($_SERVER['HTTP_HOST']) ? strtolower($_SERVER['HTTP_HOST']) : '';
+// strip port if exists (e.g., localhost:8000)
+if (strpos($host, ':') !== false) {
+    $host_no_port = explode(':', $host)[0];
+} else {
+    $host_no_port = $host;
+}
+
+if ($host_no_port === 'mhkl.mezoo.co.il') {
     $frag = 'mhklmezo';
 }
 
-if ($_SERVER['HTTP_HOST'] === 'survay.mezoo.co.il') {
+if ($host_no_port === 'survay.mezoo.co.il') {
     $frag = 'survayme';
 }
 
-if ($_SERVER['HTTP_HOST'] === 'till.mezoo.co.il' || $_SERVER['HTTP_HOST'] === 'www.till.mezoo.co.il') {
+if ($host_no_port === 'till.mezoo.co.il' || $host_no_port === 'www.till.mezoo.co.il') {
     $frag = 'tillmezo';
 }
 
+// Defaults
+$default_host = ($host_no_port === 'worldclass' || $host_no_port === 'localhost') ? '127.0.0.1' : 'localhost';
+$default_user = ($host_no_port === 'localhost' || $host_no_port === 'worldclass') ? 'root' : $frag . '_a';
+$default_pass = ($host_no_port === 'localhost' || $host_no_port === 'worldclass') ? 'root' : 'E22&77zRu@sC';
+$default_name = ($host_no_port === 'localhost' || $host_no_port === 'worldclass') ? 'mezoo' : $frag . '_a';
+$default_port = ($host_no_port === 'localhost' || $host_no_port === 'worldclass') ? 3306 : 3306;
+
+// Environment overrides for local/dev if needed
+$env_host = getenv('MEZOO_DB_HOST');
+$env_user = getenv('MEZOO_DB_USER');
+$env_pass = getenv('MEZOO_DB_PASS');
+$env_name = getenv('MEZOO_DB_NAME');
+$env_port = getenv('MEZOO_DB_PORT');
+
 $db['default'] = array(
     'dsn' => '',
-    'hostname' => $_SERVER['HTTP_HOST'] === 'worldclass' ? '127.0.0.1' : 'localhost',
-    'username' => $_SERVER['HTTP_HOST'] === 'localhost' || $_SERVER['HTTP_HOST'] === 'worldclass' ? 'root' : $frag . '_a',
-    'password' => $_SERVER['HTTP_HOST'] === 'localhost' ? 'root' : ($_SERVER['HTTP_HOST'] === 'worldclass' ? 'root' : 'E22&77zRu@sC'),
-    'database' => $_SERVER['HTTP_HOST'] === 'localhost' || $_SERVER['HTTP_HOST'] === 'worldclass' ? 'mezoo' : $frag . '_a',
+    'hostname' => $env_host ? $env_host : $default_host,
+    'username' => $env_user ? $env_user : $default_user,
+    'password' => $env_pass ? $env_pass : $default_pass,
+    'database' => $env_name ? $env_name : $default_name,
+    'port' => $env_port ? (int)$env_port : $default_port,
     'dbdriver' => 'mysqli',
     'dbprefix' => '',
     'pconnect' => false,
@@ -106,6 +129,4 @@ $db['default'] = array(
     'stricton' => false,
     'failover' => array(),
     'save_queries' => true
-
-
 );
