@@ -6,3 +6,5 @@ SurvayApp/**/application/logs/*
 SurvayApp/**/phpinfo.php
 SurvayApp/**/databases/*.sql
 SurvayApp/**/pics/company-logos/**
+# ignore local env
+SurvayApp/.env.local
