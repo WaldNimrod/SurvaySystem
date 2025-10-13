@@ -28,6 +28,7 @@ class Welcome extends CI_Controller
         $this->load->model('division_m');
         $this->load->model('responder_m');
         $this->load->model('responderextradata_m');
+        $this->load->library('ScoreCalculator');
     }
 
     public function reset()
@@ -139,112 +140,9 @@ class Welcome extends CI_Controller
             }
         }
 
-        $dimensionDataGroup = $this->dimensiondatagroup_m->get_by(array('companyDivisionId' => $this->input->get('divisionId')));
-        $dims = $this->dimensiondata_m->get_many_by(array(
-            'attrGroupId' => $dimensionDataGroup['id']
-        ));
-        $logs[] = 'Dims count: ' . ($dims ? count($dims) : 0);
-        $logs[] = 'Dims content: ' . ($dims ? json_encode($dims) : 'no dims');
-        $mazDimRes = 0;
-        $sigTotalVal = 0;
-        $dimsRes = array();
-
-        foreach ($dims as $dad) {
-
-            $dimensionType = $this->dimensiontype_m->get_by(array('id' => $dad['dimensionId']));
-
-            $logs[] = 'Calculating Dim: ' . $dimensionType['name'];
-            //Getting the questions names (keys) of every Dimention and calculating its value
-            $questions = $this->question_m->get_many_by(array(
-                'dimId' => $dimensionType['id']
-            ));
-
-            //Check if have questions to this dimention
-            if (count($questions) > 0) {
-                $logs[] = 'Dim have ' . count($questions) . ' Questions';
-                $dimTotalVal = 0; // For the total sum of questions answers
-                $dimTotalCount = 0; //How many question has been answered
-                //Calculating the average of Dim for this responder answers
-                foreach ($questions as $q) {
-
-                    // check if the responder has been aswered this question
-                    if ($this->input->get($q['questionName'])) {
-                        ++$dimTotalCount;
-                        $dimTotalVal += (int)$this->input->get($q['questionName']);
-                    }
-                }
-                $logs[] = 'dimTotalCount = ' . $dimTotalCount . ' And dimTotalVal = ' . $dimTotalVal;
-                if ($dad['dimensionId'] == 1 || $dad['dimensionId'] == 3 || $dad['dimensionId'] == 4 || $dad['dimensionId'] == 5 || $dad['dimensionId'] == 6) {
-                    $sigTotalVal += $dimTotalVal;
-                }
-                //The Average of the Responder: (Sum of values) / (sum of answered questions)
-                $responderAverageRes = $dimTotalVal / $dimTotalCount;
-                $logs[] = 'responderDimAverage = (dimTotalVal / dimTotalCount) = (' . $dimTotalVal . ' / ' . $dimTotalCount . ') = ' . $responderAverageRes;
-                //The Resoult of a dim: (ResponderAvarege - DimAverege) / DimStandardDeviation
-                $dimRes = ($responderAverageRes - $dad['average']) / $dad['standardDeviation'];
-                $logs[] = 'dimRes = (responderAverageRes - dad.average) / dad.standardDeviation = (' . $responderAverageRes . ' - ' . $dad['average'] . ') / ' . $dad['standardDeviation'] . ' = ' . $dimRes;
-                //Saving the result to the DB
-                $feedbackDimId = $this->feedbackdim_m->insert(array(
-                    'feedbackId' => $feedbackId,
-                    'dimId' => $dimensionType['id'],
-                    'result' => $dimRes
-                ));
-                $dimsRes[] = array($dad, $dimRes);
-                if ($dimensionType['id'] == 9) {
-                    $mazDimRes = $dimRes;
-                }
-
-
-            } else {
-                //No questions for this dimention (a costum dimention)
-
-                if ($dimensionType['id'] == 7) {
-                    $sigDimData = $dad;
-                }
-                if ($dimensionType['id'] == 8) {
-                    $totalDimData = $dad;
-                }
-            }
-        }
-        //Calculate Custom dims
-        //Signonot Total
-        $logs[] = 'Calculating SigTotal Dim';
-
-        $sigTotalAverage = $sigTotalVal / 56;
-        $logs[] = 'sigTotalAverage = sigTotalVal / 56 = ' . $sigTotalVal . ' / 56 = ' . $sigTotalAverage;
-
-        $sigDimRes = ($sigTotalAverage - $sigDimData['average']) / $sigDimData['standardDeviation'];
-        $logs[] = 'sigDimRes = (sigTotalAverage - sigDimData.average) / sigDimData.standardDeviation = (' . $sigTotalAverage . ' - ' . $sigDimData['average'] . ') / ' . $sigDimData['standardDeviation'] . ' = ' . $sigDimRes;
-        $feedbackDimId = $this->feedbackdim_m->insert(array(
-            'feedbackId' => $feedbackId,
-            'dimId' => $sigDimData['dimensionId'],
-            'result' => $sigDimRes
-        ));
-        $dimsRes[] = array($sigDimData, $sigDimRes);
-        // SumTotal
-        $logs[] = 'Calculating sumTotal dim';
-
-        $totalDimRes = ($sigDimRes + $mazDimRes) / 2;
-        $logs[] = 'totalDimRes = (sigDimRes + mazDimRes) / 2 = (' . $sigDimRes . ' + ' . $mazDimRes . ') / 2 = ' . $totalDimRes;
-        $feedbackDimId = $this->feedbackdim_m->insert(array(
-            'feedbackId' => $feedbackId,
-            'dimId' => $totalDimData['dimensionId'],
-            'result' => $totalDimRes
-        ));
-        $dimsRes[] = (array($totalDimData, $totalDimRes));
-        $result['Dims'] = array();
-        foreach ($dimsRes as $dim) {
-            $temp = array(
-                'res' => $dim[1]
-            );
-            if ($dim[0]['threshold']) {
-                $temp['threshold'] = $dim[0]['threshold'];
-            }
-
-            $dimensionType = $this->dimensiontype_m->get_by(array('id' => $dim[0]['dimensionId']));
-
-            $result['Dims']['dim_' . $dimensionType['name']] = $temp;
-        }
+        list($calcResult, $calcLogs, $totalDimRes, $totalDimData) = $this->scorecalculator->calculateAndPersist($feedbackId, (int)$this->input->get('divisionId'));
+        $logs = array_merge($logs, $calcLogs);
+        $result = array_merge($result, $calcResult);
         $result['Social_desirability_ReRun'] = $this->input->get('Social_desirability_ReRun');
 
 
