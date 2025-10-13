@@ -8,7 +8,12 @@ $(document).ready(function () {
     RectSize = $($('.SliderContainer')[0]).width() / 6;
 
     //Taking the data from the server side (converting the String to a Javascript object that containes all the data from the server)
-    Data = eval("(" + $('#TextData').text() + ")");
+    try {
+        Data = JSON.parse($('#TextData').text());
+    } catch (e) {
+        console && console.error && console.error('Failed parsing result JSON', e);
+        return;
+    }
 
     //Creating the Personal Details of the responder
     $PDTable = $('#PersonalD_Table');
@@ -26,7 +31,7 @@ $(document).ready(function () {
 
     //filling all the texts with an ID of PD_XXX
     $("[id^='PD']").each(function () {
-        var IDval = eval('Data.PD.' + this.id);
+        var IDval = Data.PD && Data.PD[this.id];
         if (IDval) {
             $(this).text((IDval).split(';')[1]);
         }
@@ -72,7 +77,7 @@ $(document).ready(function () {
         var delimiters = PTextID.split('-');
         var dimID = delimiters.splice(0, 1)[0];
         dimID = dimID.substring(ParamTextName.length + 1);
-        var DimRes = eval('Data.Dims.' + dimID + '.res');
+        var DimRes = Data.Dims && Data.Dims[dimID] && Data.Dims[dimID].res;
 
         var $PTexts = $(this).find('div');
 
