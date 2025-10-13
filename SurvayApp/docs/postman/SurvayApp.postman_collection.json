@@ -1,0 +1,75 @@
+{
+  "info": {
+    "name": "SurvayApp",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "GET welcome/index",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/welcome/index?PD_IDNumber=123456789&CompanyId=1&divisionId=1&SurveyId=1&ResponseId=1",
+          "host": ["{{baseUrl}}"],
+          "path": ["welcome","index"],
+          "query": [
+            {"key":"PD_IDNumber","value":"123456789"},
+            {"key":"CompanyId","value":"1"},
+            {"key":"divisionId","value":"1"},
+            {"key":"SurveyId","value":"1"},
+            {"key":"ResponseId","value":"1"}
+          ]
+        }
+      }
+    },
+    {
+      "name": "POST welcome/login",
+      "request": {
+        "method": "POST",
+        "header": [
+          {"key": "Content-Type", "value": "application/x-www-form-urlencoded"}
+        ],
+        "body": {
+          "mode": "urlencoded",
+          "urlencoded": [
+            {"key": "username", "value": "admin"},
+            {"key": "password", "value": "admin"}
+          ]
+        },
+        "url": {"raw": "{{baseUrl}}/welcome/login","host":["{{baseUrl}}"],"path":["welcome","login"]}
+      }
+    },
+    {
+      "name": "GET welcome/export",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "{{baseUrl}}/welcome/export?daterange=01.01.2020%20-%2001.02.2020",
+          "host": ["{{baseUrl}}"],
+          "path": ["welcome","export"],
+          "query": [
+            {"key": "daterange", "value": "01.01.2020 - 01.02.2020"}
+          ]
+        }
+      }
+    },
+    {
+      "name": "GET welcome/generate/{id}",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "{{baseUrl}}/welcome/generate/1?json=%7B%7D",
+          "host": ["{{baseUrl}}"],
+          "path": ["welcome","generate","1"],
+          "query": [
+            {"key":"json","value":"{}"}
+          ]
+        }
+      }
+    }
+  ],
+  "variable": [
+    {"key": "baseUrl", "value": "http://localhost/till.mezoo.co.il_bm1756763301dm"}
+  ]
+}
