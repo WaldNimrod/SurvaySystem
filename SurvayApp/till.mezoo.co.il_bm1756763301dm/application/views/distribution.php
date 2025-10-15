@@ -8,6 +8,7 @@
         body { direction: rtl; font-family: Arial, sans-serif; margin: 16px; background:#fff; }
         .container { max-width: 1200px; margin: 0 auto; }
         .toolbar { display: flex; gap: 8px; align-items: center; margin-bottom: 12px; }
+        .mr-header { height: 80px; border:2px dashed #e0f2f1; border-radius:8px; background:linear-gradient(90deg, #f7fffe, #ffffff); display:flex; align-items:center; justify-content:center; color:#5aa; margin-bottom:16px; }
         .section { margin: 14px 0; }
         .card { border:2px solid var(--brand); border-radius:12px; padding:12px; background:linear-gradient(180deg,#f7fffe,#ffffff); }
         .card h3 { margin:0 0 8px; color:#0b6; }
@@ -18,6 +19,7 @@
         th, td { border: 1px solid #e5e7eb; padding: 6px 8px; text-align: right; }
         th { background:#f0fdfa; }
         .warn { color:#b45309; }
+        .scale { display:flex; justify-content:space-between; font-size:11px; color:#555; margin-top:4px; }
         @media print { .toolbar { display:none; } }
     </style>
 </head>
@@ -29,6 +31,13 @@
         <span id="metaWarn" class="warn" style="display:none;"></span>
         <span style="margin-right:auto"></span>
         <label>דימנשיה: <select id="dimSelect"></select></label>
+    </div>
+
+    <div class="mr-header">כותרת גרפית / לוגו</div>
+
+    <div class="section card" id="filtersCard">
+        <h3>פרטי סינון</h3>
+        <div id="filtersBody" style="display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:8px 16px;"></div>
     </div>
 
     <div class="section card">
@@ -64,6 +73,21 @@
         var w = document.getElementById('metaWarn');
         w.style.display = ''; w.textContent = 'שים לב: התוצאה קוצצה ל-' + (meta.rowsUsed||0) + ' מתוך ' + (meta.total||0);
     }
+
+    // Fill filters card
+    var fb = document.getElementById('filtersBody');
+    var params = new URLSearchParams(location.search);
+    var kv = [
+        ['טווח תאריכים', params.get('daterange')||'-'],
+        ['חיפוש חופשי', params.get('freetext')||'-'],
+        ['SocialDes', params.get('socialDes')||'-'],
+        ['Company', params.get('company')||'-'],
+        ['Division', params.get('division')||'-'],
+        ['FinalGroup', params.get('finalGroup')||'-'],
+        ['Rows used', (meta.rowsUsed||0) + ' / ' + (meta.total||0)],
+        ['Truncated', meta.truncated ? 'כן' : 'לא']
+    ];
+    kv.forEach(function(p){ var d=document.createElement('div'); d.innerHTML='<strong>'+p[0]+':</strong> '+p[1]; fb.appendChild(d); });
 
     // Dimension selector
     var dimSel = document.getElementById('dimSelect');
@@ -102,10 +126,11 @@
         var pl = document.createElementNS('http://www.w3.org/2000/svg','polyline');
         pl.setAttribute('points', pts.join(' ')); pl.setAttribute('fill','none'); pl.setAttribute('stroke','#29a6a8'); pl.setAttribute('stroke-width','2');
         svg.appendChild(pl);
-        // axis labels
-        var lbl = document.createElement('div'); lbl.style.fontSize='11px'; lbl.style.marginTop='4px';
-        lbl.textContent = range[0] + '  ...  ' + range[1];
-        wrap.appendChild(svg); wrap.appendChild(lbl);
+        // axis labels as scale
+        var scale = document.createElement('div'); scale.className='scale';
+        var ticks = [-3,-2,-1,0,1,2,3];
+        ticks.forEach(function(t){ var s=document.createElement('span'); s.textContent = (t>0? '+'+t : t); scale.appendChild(s); });
+        wrap.appendChild(svg); wrap.appendChild(scale);
 
         // numeric table
         var tbl = document.createElement('table');

@@ -1,5 +1,6 @@
-<html>
+<html dir="rtl" lang="he">
 <head>
+    <title>מערכת סקרים - ממשק ניהול</title>
     <!-- Include Required Prerequisites (pinned versions) -->
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/moment@2.29.4/min/moment.min.js"></script>
@@ -130,9 +131,13 @@
 
     </script>
     <style>
+        body { direction: rtl; text-align: right; }
         .header-fixed {
             width: 100%
         }
+
+        /* RTL: הפוך סדר עמודות באזור החיפוש */
+        #search .row > [class^="col-"] { float: right; }
 
         .header-fixed > thead,
         .header-fixed > tbody,
@@ -159,7 +164,8 @@
         .header-fixed > tbody > tr > td,
         .header-fixed > thead > tr > th {
             font-size: 10pt !important;
-            float: left;
+            float: right;
+            text-align: right;
         }
 
         .header-fixed > thead > tr > th.sortable {
@@ -167,19 +173,23 @@
             cursor: pointer;
         }
 
+        /* חלוקת רוחב מדויקת כדי לפנות מקום לפעולות */
         .header-fixed > thead > tr > th,
         .header-fixed > tbody > tr > td {
-            width: 11.428%;
+            width: 10.857%; /* 7 עמודות * 10.857% + 24% (פעולות) = 100% */
         }
-
         .header-fixed.admin > thead > tr > th,
         .header-fixed.admin > tbody > tr > td {
-            width: 10% !important;
+            width: 9.0% !important; /* 8 עמודות * 9% + 28% (פעולות) = 100% */
         }
-
+        /* עמודת פעולות רחבה יותר */
         .header-fixed > thead > tr > th:last-child,
         .header-fixed > tbody > tr > td:last-child {
-            width: 20% !important;
+            width: 24% !important;
+        }
+        .header-fixed.admin > thead > tr > th:last-child,
+        .header-fixed.admin > tbody > tr > td:last-child {
+            width: 28% !important;
         }
 
         table {
@@ -189,10 +199,16 @@
         .clickable {
             cursor: pointer;
         }
+
+        /* Actions inline spacing */
+        .actions-group { display: inline-flex; gap: 6px; }
+        .actions-group .btn { padding-left: 8px; padding-right: 8px; }
+        .actions-cell { white-space: nowrap; }
     </style>
 </head>
 <body>
 <div class="container">
+    <?php $this->load->view('partials/top_header'); ?>
     <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
         <div class="modal-dialog" role="document">
             <div class="modal-content">

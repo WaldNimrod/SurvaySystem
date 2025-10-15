@@ -232,7 +232,7 @@ $config['directory_trigger'] = 'd';
 $config['log_threshold'] = (ENVIRONMENT === 'development') ? 4 : 1;
 
 // Distribution report defaults (overridable by env)
-$config['distribution_max_rows'] = getenv('DIST_MAX_ROWS') ? (int)getenv('DIST_MAX_ROWS') : 3000;
+$config['distribution_max_rows'] = getenv('DIST_MAX_ROWS') ? (int)getenv('DIST_MAX_ROWS') : 10000;
 $config['distribution_bins'] = getenv('DISTRIBUTION_BINS') ? (int)getenv('DISTRIBUTION_BINS') : 12;
 
 /*
