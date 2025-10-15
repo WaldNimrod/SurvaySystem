@@ -25,7 +25,20 @@
 | a PHP script and you can easily do that on your own.
 |
 */
-$config['base_url'] = '';
+// Auto-detect base URL including port (useful for local dev on :8000)
+if (isset($_SERVER['HTTP_HOST'])) {
+    $scheme = (!empty($_SERVER['HTTPS']) && strtolower((string)$_SERVER['HTTPS']) !== 'off') ? 'https' : 'http';
+    $config['base_url'] = $scheme . '://' . $_SERVER['HTTP_HOST'] . '/';
+} else {
+    $config['base_url'] = 'http://localhost:8000/';
+}
+
+// Development mode flag (can be toggled via env var APP_DEV=1)
+// Consider localhost with or without port, and 127.0.0.1
+$host = isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : '';
+$hostOnly = $host !== '' ? explode(':', $host)[0] : '';
+$isLocalHost = ($hostOnly === 'localhost' || $hostOnly === '127.0.0.1');
+$config['app_dev_mode'] = (getenv('APP_DEV') === '1') || $isLocalHost;
 
 /*
 |--------------------------------------------------------------------------
@@ -217,6 +230,10 @@ $config['directory_trigger'] = 'd';
 */
 // Set higher logging in development, minimal in production (handled by index.php ENVIRONMENT)
 $config['log_threshold'] = (ENVIRONMENT === 'development') ? 4 : 1;
+
+// Distribution report defaults (overridable by env)
+$config['distribution_max_rows'] = getenv('DIST_MAX_ROWS') ? (int)getenv('DIST_MAX_ROWS') : 3000;
+$config['distribution_bins'] = getenv('DISTRIBUTION_BINS') ? (int)getenv('DISTRIBUTION_BINS') : 12;
 
 /*
 |--------------------------------------------------------------------------

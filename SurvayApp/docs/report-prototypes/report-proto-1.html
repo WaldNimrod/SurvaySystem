@@ -1,0 +1,316 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <title>דוח — דוגמה 1</title>
+  <style>
+    :root { --brand-color:#29a6a8; }
+    body { font-family: Arial, sans-serif; margin: 24px; color:#222; background:#fff; }
+    .page-container { max-width:1200px; margin:0 auto; }
+    .header-graphic { height: 90px; border:2px dashed #e0f2f1; border-radius:8px; background:linear-gradient(90deg, #f7fffe, #ffffff); display:flex; align-items:center; justify-content:center; color:#5aa; margin-bottom:16px; }
+    .final-card {
+      border: 2px solid var(--brand-color); border-radius: 8px; padding:16px; margin-bottom:24px;
+      background:#f7fffe;
+    }
+    .badge {
+      display:inline-block; background:var(--brand-color); color:#fff; padding:6px 12px; border-radius:999px; font-weight:bold;
+    }
+    .meta { margin-top:8px; color:#555; font-size:14px; }
+    h3 { margin: 16px 0; }
+    table { width:100%; border-collapse:collapse; font-size:14px; }
+    th, td { border-bottom:1px solid #eee; padding:10px; text-align:right; }
+    th { background:#fafafa; }
+    .status-ok { color:#2e7d32; font-weight:bold; }
+    .status-warn { color:#e65100; font-weight:bold; }
+    .details-grid { display:grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap:8px 24px; margin-bottom:16px; }
+    .details-grid .item { display:flex; gap:8px; align-items:center; border-bottom:1px solid #eee; padding:6px 0; }
+    .details-grid .label { width:140px; color:#555; background:#fafafa; padding:4px 8px; border-radius:4px; text-align:right; }
+    .details-grid .value { color:#222; }
+
+    .dim-cards { display:grid; grid-template-columns: repeat(2, minmax(320px, 1fr)); gap:16px; }
+    .dim-card { border:1px solid #eee; border-radius:10px; padding:14px; background:#fff; }
+    .dim-title { font-weight:bold; margin-bottom:6px; }
+    .dim-meta { font-size:12px; color:#666; margin-top:6px; }
+    .status-ok { color:#2e7d32; font-weight:bold; }
+    .status-warn { color:#e65100; font-weight:bold; }
+    .scale { font-size:11px; color:#777; display:flex; justify-content:space-between; margin-top:2px; width:70%; margin-left:auto; margin-right:auto; }
+    .norm-bar { height:12px; border-radius:6px; margin:6px auto 0; position:relative; overflow:hidden; width:70%; }
+    .tick { position:absolute; top:-4px; width:1px; height:20px; background:#bbb; opacity:0.9; }
+    .marker { position:absolute; top:-6px; width:4px; height:24px; background:#29a6a8; border-radius:2px; box-shadow:0 0 0 2px #fff, 0 0 0 4px rgba(41,166,168,0.25); }
+    .z-label { position:absolute; top:-22px; transform:translateX(-50%); font-size:11px; color:#333; font-weight:bold; }
+
+    /* כרטיסים מודגשים למדדים המסכמים */
+    .summary-cards { display:grid; grid-template-columns: repeat(3, minmax(240px, 1fr)); gap:16px; margin: 12px 0 24px; }
+    .summary-card { border:2px solid var(--brand-color); border-radius:12px; padding:16px; background:linear-gradient(180deg, #f7fffe, #ffffff); }
+    .summary-title { font-weight:bold; font-size:16px; margin-bottom:8px; color:#0b6; }
+    .summary-meta { font-size:13px; color:#444; margin-top:8px; }
+    /* יישור מרכז למחוגים */
+    .dim-card svg, .summary-card svg { display:block; margin:0 auto; }
+  </style>
+  <!-- קובץ דוגמה ללא נתונים. החלף תגי הערה בערכים אמיתיים בזמן אינטגרציה. -->
+  <!-- צבעים/כפתורים לפי ירוק המותג #29a6a8 -->
+</head>
+<body>
+  <div class="page-container">
+  <div class="header-graphic">מקום לכותרת גרפית/לוגו</div>
+
+  <section class="final-card">
+    <div class="badge">Final Group: 2</div>
+    <div class="meta">
+      totalDimRes: -1.45 | threshold: 1.49 | Social_desirability_ReRun: false
+    </div>
+    <div class="meta">
+      הסבר החלטה: Social=false → בוחנים סף; מאחר ו‑totalDimRes ≤ threshold → קבוצה 2.
+    </div>
+  </section>
+
+  <!-- סקשן פרטי נבחן -->
+  <h3>פרטי הנבחן</h3>
+  <div class="details-grid" style="grid-template-columns:1fr 1fr;">
+    <!-- עמודה ימין: שם, משפחה, ת.ז, תאריך -->
+    <div>
+      <div class="item"><div class="label">שם פרטי</div><div class="value">דוגמה</div></div>
+      <div class="item"><div class="label">שם משפחה</div><div class="value">לדוגמה</div></div>
+      <div class="item"><div class="label">ת.ז</div><div class="value">123456789</div></div>
+      <div class="item"><div class="label">תאריך</div><div class="value">01.09.2025</div></div>
+    </div>
+    <!-- עמודה שמאל: חברה, מחלקה, קבוצת שיוך -->
+    <div>
+      <div class="item"><div class="label">חברה</div><div class="value">חברת הדגמה בע"מ</div></div>
+      <div class="item"><div class="label">מחלקה</div><div class="value">מחלקת הדגמה</div></div>
+      <div class="item"><div class="label">קבוצת שיוך</div><div class="value">DEV_ROUTE</div></div>
+    </div>
+  </div>
+
+  <!-- הסברים בעברית (מהדוח הקיים) -->
+  <h2 style="margin-top:12px;">הערכת יושרה וערכי עבודה</h2>
+  <p>
+    מערכת הערכת יושרה וערכי עבודה בודקת את נטייתו של העובד להתנהגות אתית בתחום העבודה.
+    התוצאות מבוססות על דיווחי הנבדק ותשובותיו לשאלונים פסיכולוגיים הבודקים את רמת מצפוניותו ואת ערכי העבודה שלו.
+    התוצאות מבוססות על נורמות המותאמות לאוכלוסיית המועמדים לתפקיד הנתון ונתקבלו על סמך מחקרים מדעיים שבדקו את תוקף המבחן.
+  </p>
+
+  <h2>דברי הסבר</h2>
+  <h4>המבחן מסווג את הנבחנים לפי תגובותיהם ל- 3 קבוצות:</h4>
+  <div style="padding:10px; margin-right:20px">
+    <ul>
+      <li><strong>קבוצה 1:</strong> קבוצה שאחוז גבוה של האנשים הכלולים בה אינם עונים בכנות על השאלונים, ולכן לא ניתן להעריך את רמת היושרה שלהם.</li>
+      <li><strong>קבוצה 2:</strong> קבוצה שאחוז גבוה של האנשים הכלולים בה הנם בעלי רמת יושרה נאותה. הם נוהגים לפי הנורמות המקובלות, שומרים על נהלים וחוקים, לוקחים אחריות על פעולותיהם ואינם מנצלים אחרים לתועלתם.</li>
+      <li><strong>קבוצה 3:</strong> קבוצה שאחוז גבוה של האנשים הכלולים בה הנם בעלי רמת יושרה נמוכה. התנהגותם מושפעת משיקולים תועלתניים, הם נוטים לעבור על החוק ולהפר נורמות וכללים, הם אינם לוקחים אחריות לפעולותיהם ועלולים לנצל אחרים לתועלתם האישית.</li>
+    </ul>
+  </div>
+
+  <!-- מדדים מסכמים מודגשים: SigTotal, MAZ, SumTotal -->
+  <h3>מדדים מסכמים</h3>
+  <div class="summary-cards">
+    <div class="summary-card">
+      <div class="summary-title">SigTotal — ציון סופי סגנונות</div>
+      <svg width="280" height="140" viewBox="0 0 280 140">
+        <path d="M20,120 A100,100 0 0,1 260,120" fill="none" stroke="#e0e0e0" stroke-width="14"/>
+        <!-- דוגמה: Z=-1.67 -->
+        <line x1="140" y1="120" x2="95" y2="78" stroke="#29a6a8" stroke-width="8"/>
+      </svg>
+      <div class="scale"><span>-3</span><span>-2</span><span>-1</span><span>0</span><span>+1</span><span>+2</span><span>+3</span></div>
+      <div class="norm-bar" style="background:linear-gradient(90deg,#f8d7da 0% 16.667%, #fff3cd 16.667% 33.333%, #e8f5e9 33.333% 66.667%, #fff3cd 66.667% 83.333%, #f8d7da 83.333% 100%);">
+        <div class="tick" style="left:16.667%"></div>
+        <div class="tick" style="left:33.333%"></div>
+        <div class="tick" style="left:66.667%"></div>
+        <div class="tick" style="left:83.333%"></div>
+        <div class="marker" style="left:22.167%"></div>
+        <div class="z-label" style="left:22.167%">|Z|=1.67σ</div>
+      </div>
+      <div class="summary-meta">Z: -1.67 | נורמה: avg 2.13, σ 0.14</div>
+    </div>
+
+    <div class="summary-card">
+      <div class="summary-title">MAZ — ציון מצבים</div>
+      <svg width="280" height="140" viewBox="0 0 280 140">
+        <path d="M20,120 A100,100 0 0,1 260,120" fill="none" stroke="#e0e0e0" stroke-width="14"/>
+        <!-- דוגמה: Z=-1.23 -->
+        <line x1="140" y1="120" x2="105" y2="86" stroke="#29a6a8" stroke-width="8"/>
+      </svg>
+      <div class="scale"><span>-3</span><span>-2</span><span>-1</span><span>0</span><span>+1</span><span>+2</span><span>+3</span></div>
+      <div class="norm-bar" style="background:linear-gradient(90deg,#f8d7da 0% 16.667%, #fff3cd 16.667% 33.333%, #e8f5e9 33.333% 66.667%, #fff3cd 66.667% 83.333%, #f8d7da 83.333% 100%);">
+        <div class="tick" style="left:16.667%"></div>
+        <div class="tick" style="left:33.333%"></div>
+        <div class="tick" style="left:66.667%"></div>
+        <div class="tick" style="left:83.333%"></div>
+        <div class="marker" style="left:29.5%"></div>
+        <div class="z-label" style="left:29.5%">|Z|=1.23σ</div>
+      </div>
+      <div class="summary-meta">Z: -1.23 | נורמה: avg 2.86, σ 1.14</div>
+    </div>
+
+    <div class="summary-card">
+      <div class="summary-title">SumTotal — ציון סופי כללי</div>
+      <svg width="280" height="140" viewBox="0 0 280 140">
+        <path d="M20,120 A100,100 0 0,1 260,120" fill="none" stroke="#e0e0e0" stroke-width="14"/>
+        <!-- דוגמה: Z=-1.45 -->
+        <line x1="140" y1="120" x2="102" y2="84" stroke="#29a6a8" stroke-width="8"/>
+      </svg>
+      <div class="scale"><span>-3</span><span>-2</span><span>-1</span><span>0</span><span>+1</span><span>+2</span><span>+3</span></div>
+      <div class="norm-bar" style="background:linear-gradient(90deg,#f8d7da 0% 16.667%, #fff3cd 16.667% 25.167%, #e8f5e9 25.167% 74.833%, #fff3cd 74.833% 83.333%, #f8d7da 83.333% 100%);">
+        <div class="tick" style="left:16.667%"></div>
+        <div class="tick" style="left:25.167%"></div>
+        <div class="tick" style="left:74.833%"></div>
+        <div class="tick" style="left:83.333%"></div>
+        <div class="marker" style="left:25.833%"></div>
+        <div class="z-label" style="left:25.833%">|Z|=1.45σ</div>
+      </div>
+      <div class="summary-meta">Z: -1.45 | נורמה: avg 2.50, σ 0.64 | threshold: 1.49</div>
+    </div>
+  </div>
+
+  <div class="dim-cards">
+    <div class="dim-card">
+      <div class="dim-title">מניפולטיביות</div>
+      <svg width="220" height="120" viewBox="0 0 220 120">
+        <path d="M20,100 A80,80 0 0,1 200,100" fill="none" stroke="#eee" stroke-width="12"/>
+        <!-- מחוג ל‑Z=-2.26 (שמאל) -->
+        <line x1="110" y1="100" x2="55" y2="55" stroke="#29a6a8" stroke-width="6"/>
+      </svg>
+      <div class="scale"><span>-3</span><span>-2</span><span>-1</span><span>0</span><span>+1</span><span>+2</span><span>+3</span></div>
+      <div class="norm-bar" style="background:linear-gradient(90deg,#f8d7da 0% 16.667%, #fff3cd 16.667% 33.333%, #e8f5e9 33.333% 66.667%, #fff3cd 66.667% 83.333%, #f8d7da 83.333% 100%);">
+        <div class="tick" style="left:16.667%"></div>
+        <div class="tick" style="left:33.333%"></div>
+        <div class="tick" style="left:66.667%"></div>
+        <div class="tick" style="left:83.333%"></div>
+        <div class="marker" style="left:12.333%"></div>
+        <div class="z-label" style="left:12.333%">|Z|=2.26σ</div>
+      </div>
+      <div class="dim-meta">Z: -2.26 | נורמה: ממוצע 1.90, σ 0.29 | threshold: — | מצב: <span class="status-warn">WARN</span></div>
+    </div>
+
+    <div class="dim-card">
+      <div class="dim-title">אדישות</div>
+      <svg width="220" height="120" viewBox="0 0 220 120">
+        <path d="M20,100 A80,80 0 0,1 200,100" fill="none" stroke="#eee" stroke-width="12"/>
+        <!-- Z=+2.09 (ימין) -->
+        <line x1="110" y1="100" x2="165" y2="60" stroke="#29a6a8" stroke-width="6"/>
+      </svg>
+      <div class="scale"><span>-3</span><span>-2</span><span>-1</span><span>0</span><span>+1</span><span>+2</span><span>+3</span></div>
+      <div class="norm-bar" style="background:linear-gradient(90deg,#f8d7da 0% 16.667%, #fff3cd 16.667% 33.333%, #e8f5e9 33.333% 66.667%, #fff3cd 66.667% 83.333%, #f8d7da 83.333% 100%);">
+        <div class="tick" style="left:16.667%"></div>
+        <div class="tick" style="left:33.333%"></div>
+        <div class="tick" style="left:66.667%"></div>
+        <div class="tick" style="left:83.333%"></div>
+        <div class="marker" style="left:84.833%"></div>
+        <div class="z-label" style="left:84.833%">|Z|=2.09σ</div>
+      </div>
+      <div class="dim-meta">Z: +2.09 | נורמה: ממוצע 2.80, σ 0.39 | threshold: — | מצב: <span class="status-ok">OK</span></div>
+    </div>
+
+    <div class="dim-card">
+      <div class="dim-title">אימפולסיביות</div>
+      <svg width="220" height="120" viewBox="0 0 220 120">
+        <path d="M20,100 A80,80 0 0,1 200,100" fill="none" stroke="#eee" stroke-width="12"/>
+        <!-- Z≈-0.52 -->
+        <line x1="110" y1="100" x2="95" y2="80" stroke="#29a6a8" stroke-width="6"/>
+      </svg>
+      <div class="scale"><span>-3</span><span>-2</span><span>-1</span><span>0</span><span>+1</span><span>+2</span><span>+3</span></div>
+      <div class="norm-bar" style="background:linear-gradient(90deg,#f8d7da 0% 16.667%, #fff3cd 16.667% 33.333%, #e8f5e9 33.333% 66.667%, #fff3cd 66.667% 83.333%, #f8d7da 83.333% 100%);">
+        <div class="tick" style="left:16.667%"></div>
+        <div class="tick" style="left:33.333%"></div>
+        <div class="tick" style="left:66.667%"></div>
+        <div class="tick" style="left:83.333%"></div>
+        <div class="marker" style="left:41.333%"></div>
+        <div class="z-label" style="left:41.333%">|Z|=0.52σ</div>
+      </div>
+      <div class="dim-meta">Z: -0.52 | נורמה: ממוצע 1.79, σ 0.31 | threshold: — | מצב: <span class="status-ok">OK</span></div>
+    </div>
+
+    <div class="dim-card">
+      <div class="dim-title">חוסר אחריות</div>
+      <svg width="220" height="120" viewBox="0 0 220 120">
+        <path d="M20,100 A80,80 0 0,1 200,100" fill="none" stroke="#eee" stroke-width="12"/>
+        <!-- Z≈-1.47 -->
+        <line x1="110" y1="100" x2="80" y2="70" stroke="#29a6a8" stroke-width="6"/>
+      </svg>
+      <div class="scale"><span>-3</span><span>-2</span><span>-1</span><span>0</span><span>+1</span><span>+2</span><span>+3</span></div>
+      <div class="norm-bar" style="background:linear-gradient(90deg,#f8d7da 0% 16.667%, #fff3cd 16.667% 33.333%, #e8f5e9 33.333% 66.667%, #fff3cd 66.667% 83.333%, #f8d7da 83.333% 100%);">
+        <div class="tick" style="left:16.667%"></div>
+        <div class="tick" style="left:33.333%"></div>
+        <div class="tick" style="left:66.667%"></div>
+        <div class="tick" style="left:83.333%"></div>
+        <div class="marker" style="left:25.5%"></div>
+        <div class="z-label" style="left:25.5%">|Z|=1.47σ</div>
+      </div>
+      <div class="dim-meta">Z: -1.47 | נורמה: ממוצע 1.79, σ 0.37 | threshold: — | מצב: <span class="status-warn">WARN</span></div>
+    </div>
+
+    <div class="dim-card">
+      <div class="dim-title">חלקלקות בין‑אישית</div>
+      <svg width="220" height="120" viewBox="0 0 220 120">
+        <path d="M20,100 A80,80 0 0,1 200,100" fill="none" stroke="#eee" stroke-width="12"/>
+        <!-- Z≈+0.49 -->
+        <line x1="110" y1="100" x2="125" y2="85" stroke="#29a6a8" stroke-width="6"/>
+      </svg>
+      <div class="scale"><span>-3</span><span>-2</span><span>-1</span><span>0</span><span>+1</span><span>+2</span><span>+3</span></div>
+      <div class="norm-bar" style="background:linear-gradient(90deg,#f8d7da 0% 16.667%, #fff3cd 16.667% 33.333%, #e8f5e9 33.333% 66.667%, #fff3cd 66.667% 83.333%, #f8d7da 83.333% 100%);">
+        <div class="tick" style="left:16.667%"></div>
+        <div class="tick" style="left:33.333%"></div>
+        <div class="tick" style="left:66.667%"></div>
+        <div class="tick" style="left:83.333%"></div>
+        <div class="marker" style="left:58.167%"></div>
+        <div class="z-label" style="left:58.167%">|Z|=0.49σ</div>
+      </div>
+      <div class="dim-meta">Z: +0.49 | נורמה: ממוצע 2.83, σ 0.35 | threshold: — | מצב: <span class="status-ok">OK</span></div>
+    </div>
+
+  </div>
+
+  <!-- סקשן פיתוח (דוגמה) -->
+  <section style="margin-top:24px; padding-top:16px; border-top:2px dashed #e0e0e0;">
+    <h3>סביבת פיתוח — קבוצת ייחוס ושלבי חישוב (דוגמה)</h3>
+    <h4>קבוצת ייחוס (DimMeta)</h4>
+    <table style="width:100%; border-collapse:collapse; font-size:14px;">
+      <thead>
+        <tr>
+          <th style="text-align:right; background:#fafafa; padding:8px; border-bottom:1px solid #eee;">דימנשיה</th>
+          <th style="text-align:right; background:#fafafa; padding:8px; border-bottom:1px solid #eee;">ממוצע</th>
+          <th style="text-align:right; background:#fafafa; padding:8px; border-bottom:1px solid #eee;">σ</th>
+          <th style="text-align:right; background:#fafafa; padding:8px; border-bottom:1px solid #eee;">Threshold</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>מניפולטיביות</td><td>1.90</td><td>0.29</td><td>—</td></tr>
+        <tr><td>אדישות</td><td>2.80</td><td>0.39</td><td>—</td></tr>
+        <tr><td>אימפולסיביות</td><td>1.79</td><td>0.31</td><td>—</td></tr>
+        <tr><td>חוסר אחריות</td><td>1.79</td><td>0.37</td><td>—</td></tr>
+        <tr><td>חלקלקות בין‑אישית</td><td>2.83</td><td>0.35</td><td>—</td></tr>
+        <tr><td>SigTotal</td><td>2.13</td><td>0.14</td><td>—</td></tr>
+        <tr><td>MAZ</td><td>2.86</td><td>1.14</td><td>—</td></tr>
+        <tr><td>SumTotal</td><td>2.50</td><td>0.64</td><td>1.49</td></tr>
+      </tbody>
+    </table>
+
+    <h4 style="margin-top:16px;">פירוט מספרי לנבחן (דוגמה)</h4>
+    <table style="width:100%; border-collapse:collapse; font-size:14px;">
+      <thead>
+        <tr>
+          <th style="text-align:right; background:#fafafa; padding:8px; border-bottom:1px solid #eee;">דימנשיה</th>
+          <th style="text-align:right; background:#fafafa; padding:8px; border-bottom:1px solid #eee;">Z</th>
+          <th style="text-align:right; background:#fafafa; padding:8px; border-bottom:1px solid #eee;">|Z|σ</th>
+          <th style="text-align:right; background:#fafafa; padding:8px; border-bottom:1px solid #eee;">Threshold</th>
+          <th style="text-align:right; background:#fafafa; padding:8px; border-bottom:1px solid #eee;">סטטוס</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>מניפולטיביות</td><td>-2.26</td><td>2.26</td><td>—</td><td>WARN</td></tr>
+        <tr><td>אדישות</td><td>+2.09</td><td>2.09</td><td>—</td><td>OK</td></tr>
+        <tr><td>אימפולסיביות</td><td>-0.52</td><td>0.52</td><td>—</td><td>OK</td></tr>
+        <tr><td>חוסר אחריות</td><td>-1.47</td><td>1.47</td><td>—</td><td>WARN</td></tr>
+        <tr><td>חלקלקות בין‑אישית</td><td>+0.49</td><td>0.49</td><td>—</td><td>OK</td></tr>
+        <tr><td>SigTotal</td><td>-1.67</td><td>1.67</td><td>—</td><td>WARN</td></tr>
+        <tr><td>MAZ</td><td>-1.23</td><td>1.23</td><td>—</td><td>WARN</td></tr>
+        <tr><td><strong>SumTotal</strong></td><td><strong>-1.45</strong></td><td><strong>1.45</strong></td><td>1.49</td><td><strong>WARN</strong></td></tr>
+      </tbody>
+    </table>
+    <p style="color:#666; font-size:12px;">הסקשן מוצג בדוגמה לצרכי עיצוב בלבד.</p>
+  </section>
+
+  </div><!-- /.page-container -->
+</body>
+</html>
+
+

@@ -23,7 +23,9 @@
                     'Last 7 Days': [moment().subtract(6, 'days'), moment()],
                     'Last 30 Days': [moment().subtract(29, 'days'), moment()],
                     'This Month': [moment().startOf('month'), moment().endOf('month')],
-                    'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+                    'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
+                    'מתחילת השנה': [moment().startOf('year'), moment()],
+                    'שנה שעברה': [moment().subtract(1, 'year').startOf('year'), moment().subtract(1, 'year').endOf('year')]
                 }
             });
 
@@ -44,7 +46,8 @@
 
                     }
 
-                    window.open(url)
+                    // Avoid popup blocks: navigate in same tab
+                    window.location.href = url;
 
                 })
                 $('.downloadable').click(function (element) {

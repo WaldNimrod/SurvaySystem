@@ -94,18 +94,43 @@
         <div class="col-sm-3">
             <div class="row">
                 <div class="col-sm-6">
-                    <a href="<?php echo fix_link(site_url('welcome/export')); ?>?daterange=<?php echo $this->input->get('daterange'); ?>&freetext=<?php echo $_GET["freetext"];?>&socialDes=<?php echo $_GET["socialDes"];?>&company=<?php echo $_GET["company"];?>&division=<?php echo $_GET["division"];?>&dataGroup=<?php echo $_GET["dataGroup"];?>&finalGroup=<?php echo $_GET["finalGroup"];?>&sortKey=<?php echo $_GET["sortKey"];?>&sortOrder=<?php echo $_GET["sortOrder"];?>"
+                    <input type="number" min="1" max="1000" name="perPage" placeholder="Rows/page"
+                           value="<?php echo @$_GET['perPage'] ?: 100; ?>" class="form-control"/>
+                </div>
+                <div class="col-sm-6">
+                    <input type="number" min="1" name="page" placeholder="Page"
+                           value="<?php echo @$_GET['page'] ?: 1; ?>" class="form-control"/>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-3">
+            <div class="row">
+                <div class="col-sm-6">
+                    <a href="<?php echo fix_link(site_url('welcome/export')); ?>?daterange=<?php echo $this->input->get('daterange'); ?>&freetext=<?php echo @$_GET["freetext"];?>&socialDes=<?php echo @$_GET["socialDes"];?>&company=<?php echo @$_GET["company"];?>&division=<?php echo @$_GET["division"];?>&dataGroup=<?php echo @$_GET["dataGroup"];?>&finalGroup=<?php echo @$_GET["finalGroup"];?>&sortKey=<?php echo @$_GET["sortKey"];?>&sortOrder=<?php echo @$_GET["sortOrder"];?>"
                        class="btn btn-danger form-control">Export
                   </a>
                 </div>
                 <div class="col-sm-6">
+                    <?php $distUrlBase = fix_link(site_url('welcome/distribution')); ?>
+                    <a href="<?php echo $distUrlBase; ?>?<?php echo http_build_query($_GET); ?>"
+                       class="btn btn-warning form-control">Distribution report</a>
+                </div>
+            </div>
+            <div class="row" style="margin-top:6px;">
+                <div class="col-sm-6">
                     <a href="<?php echo fix_link(site_url('welcome/admin')); ?>"
                        class="btn btn-info form-control">Clear</a>
                 </div>
+                <div class="col-sm-6">
+                    <?php $distExportBase = fix_link(site_url('welcome/distribution_export')); ?>
+                    <a href="<?php echo $distExportBase; ?>?<?php echo http_build_query($_GET); ?>"
+                       class="btn btn-default form-control">Distribution CSV</a>
+                </div>
             </div>
         </div>
-        <input type="hidden" name="sortKey" value="<?php echo $_GET['sortKey']; ?>"/>
-        <input type="hidden" name="sortOrder" value="<?php echo $_GET['sortOrder']; ?>"/>
+        <input type="hidden" name="sortKey" value="<?php echo @$_GET['sortKey']; ?>"/>
+        <input type="hidden" name="sortOrder" value="<?php echo @$_GET['sortOrder']; ?>"/>
     </form>
 </div>
 <table class="table table-striped table-hover header-fixed <?php if ($data['admin']) { ?>admin<?php } ?>">
@@ -146,9 +171,16 @@
         ?>
         <tr id="row<?php echo $result['feedbackId']; ?>"
             data-data="<?php echo fix_link(site_url('welcome/generate/'.$result['feedbackId']) . '?json=' . urlencode($result['json'])); ?>">
-            <td class="clickable"><?php echo $result['feedbackId']; ?> <a class="downloadable"
-                                                                          href="<?php echo fix_link(site_url('welcome/generate/'.$result['feedbackId']) . '?d=1&fileName='.urlencode($result['fileName']).'&json=' . urlencode($result['json'])); ?>"><span
-                        class="glyphicon glyphicon-download"></span></a></td>
+            <td class="clickable">
+                <?php echo $result['feedbackId']; ?>
+                <a class="downloadable"
+                   href="<?php echo fix_link(site_url('welcome/generate/'.$result['feedbackId']) . '?d=1&fileName='.urlencode($result['fileName']).'&json=' . urlencode($result['json'])); ?>"><span
+                        class="glyphicon glyphicon-download"></span></a>
+                <?php if (!empty($data['appDev'])) { ?>
+                    <a class="btn btn-xs btn-default" target="_blank" style="margin-right:6px;"
+                       href="<?php echo fix_link(site_url('welcome/recalc/'.$result['feedbackId'])); ?>" onclick="event.stopPropagation();">Recalc (dev)</a>
+                <?php } ?>
+            </td>
             <?php if ($data['admin']) { ?>
                 <td class="clickable"><?php echo $result['companyName']; ?></td><?php } ?>
             <td class="clickable"><?php echo $result['divisionName']; ?></td>
@@ -181,5 +213,17 @@
     </tbody>
 </table>
 <div id="footer">
-    Total: <?php echo count($data['results']); ?>
+    Total: <?php echo (int)$data['pagination']['total']; ?> | Page <?php echo (int)$data['pagination']['page']; ?> / <?php echo (int)$data['pagination']['pages']; ?>
+    <div class="pull-right">
+        <?php
+        $base = fix_link(site_url('welcome/admin')) . '?';
+        $params = $_GET; $params['perPage'] = $data['pagination']['perPage'];
+        $prev = $data['pagination']['page'] > 1 ? $data['pagination']['page'] - 1 : 1;
+        $next = $data['pagination']['page'] < $data['pagination']['pages'] ? $data['pagination']['page'] + 1 : $data['pagination']['pages'];
+        $params['page'] = $prev; $prevUrl = $base . http_build_query($params);
+        $params['page'] = $next; $nextUrl = $base . http_build_query($params);
+        ?>
+        <a class="btn btn-default btn-xs" href="<?php echo $prevUrl; ?>">Prev</a>
+        <a class="btn btn-default btn-xs" href="<?php echo $nextUrl; ?>">Next</a>
+    </div>
 </div>
