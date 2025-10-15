@@ -4,93 +4,27 @@
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<title>Untitled Document</title>
-	<link href="<?php echo base_url('css/style.css'); ?>" rel="stylesheet" type="text/css" />
-	<style>
-		/* Modern report (print-friendly) */
-		:root { --brand:#29a6a8; }
-		#ModernReport { max-width:1200px; margin:0 auto; padding:16px 0; font-family: Arial, sans-serif; direction: rtl; position: relative; z-index: 1; }
-		/* Hide legacy layout on screen: show only the new ModernReport */
-		.container > :not(#ModernReport) { display:none; }
-		.mr-header { height: 80px; border:2px dashed #e0f2f1; border-radius:8px; background:linear-gradient(90deg, #f7fffe, #ffffff); display:flex; align-items:center; justify-content:center; color:#5aa; margin-bottom:16px; }
-		.mr-final { border: 2px solid var(--brand); border-radius: 8px; padding:14px; margin-bottom:16px; background:#f7fffe; }
-		.mr-badge { display:inline-block; background:var(--brand); color:#fff; padding:6px 12px; border-radius:999px; font-weight:bold; }
-		.mr-meta { margin-top:6px; color:#444; font-size:14px; }
-		.mr-details { display:grid; grid-template-columns:1fr 1fr; gap:8px 24px; margin:12px 0 16px; }
-		.mr-item { display:flex; gap:8px; align-items:center; border-bottom:1px solid #eee; padding:6px 0; }
-		.mr-label { width:140px; color:#555; background:#fafafa; padding:4px 8px; border-radius:4px; text-align:right; }
-		.mr-value{ color:#222; }
-		.mr-summaries { display:grid; grid-template-columns: repeat(3, minmax(240px, 1fr)); gap:16px; margin: 8px 0 16px; }
-		.mr-summary { border:2px solid var(--brand); border-radius:12px; padding:12px; background:linear-gradient(180deg, #f7fffe, #ffffff); }
-		.mr-summary .title { font-weight:bold; font-size:16px; margin-bottom:6px; color:#0b6; text-align:center; }
-		.mr-grid { display:grid; grid-template-columns: repeat(2, minmax(320px, 1fr)); gap:16px; }
-		.mr-card { border:1px solid #eee; border-radius:10px; padding:12px; background:#fff; }
-		.mr-card .name { font-weight:bold; margin-bottom:6px; }
-		.mr-card .meta { font-size:12px; color:#666; margin-top:6px; }
-		.mr-scale { font-size:11px; color:#777; display:flex; justify-content:space-between; margin-top:2px; width:70%; margin-left:auto; margin-right:auto; }
-		.mr-bar { height:12px; border-radius:6px; margin:6px auto 0; position:relative; overflow:hidden; width:70%; }
-		.mr-tick { position:absolute; top:-4px; width:1px; height:20px; background:#bbb; opacity:0.9; }
-		.mr-marker { position:absolute; top:-6px; width:4px; height:24px; background:var(--brand); border-radius:2px; box-shadow:0 0 0 2px #fff, 0 0 0 4px rgba(41,166,168,0.25); }
-		.mr-z { position:absolute; top:-22px; transform:translateX(-50%); font-size:11px; color:#333; font-weight:bold; }
-		.mr-ok { color:#2e7d32; font-weight:bold; }
-		.mr-warn { color:#e65100; font-weight:bold; }
+	<link href="http://localhost:8000/css/style.css" rel="stylesheet" type="text/css" />
 
-		/* Page & print */
-		@page { size: A4; margin: 12mm 10mm; }
-		@media print {
-			body { direction: rtl; }
-			#ModernReport { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-			#ModernReport .mr-header { border:0; background:transparent; }
-			.mr-summary, .mr-card { break-inside: avoid; page-break-inside: avoid; -webkit-column-break-inside: avoid; }
-			#mr-dev { display:none !important; }
-			/* Hide legacy layout when printing new report */
-			.container > :not(#ModernReport) { display:none !important; }
-		}
-	</style>
-
-	<script src="<?php echo base_url('js/jquery-1.9.0.js'); ?>" type="text/javascript"></script>
-	<script src="<?php echo base_url('js/mashov.js'); ?>" type="text/javascript"></script>
+	<script src="http://localhost:8000/js/jquery-1.9.0.js" type="text/javascript"></script>
+	<script src="http://localhost:8000/js/mashov.js" type="text/javascript"></script>
 	<script type="text/javascript">
-		window.APP_DEV = <?php echo $this->config->item('app_dev_mode') ? 'true' : 'false'; ?>;
+		window.APP_DEV = true;
 		window.DEBUG_MODE = window.APP_DEV || (function(){
 			try { return (new URLSearchParams(window.location.search)).get('debug') === '1'; } catch(e) { return false; }
 		})();
 	</script>
 </head>
 <body>
-<span id="TextData" runat="server" style="display: none;"><?php echo $result;?></span>
+<span id="TextData" runat="server" style="display: none;">{"PD":{"PD_date":"\u05ea\u05d0\u05e8\u05d9\u05da;14-10-2025 11:08:33","PD_IDNumber":"\u05ea\u05e2\u05d5\u05d3\u05ea \u05d6\u05d4\u05d5\u05ea;999000123","PD_firstName":"\u05e9\u05dd \u05e4\u05e8\u05d8\u05d9;Dev","PD_lastName":"\u05e9\u05dd \u05de\u05e9\u05e4\u05d7\u05d4;Tester","PD_routeName":"\u05e7\u05d1\u05d5\u05e6\u05ea \u05d9\u05d7\u05d5\u05e1;DEV_ROUTE","PD_candidateID":"\u05de\u05e1\u05e4\u05e8 \u05de\u05d5\u05e2\u05de\u05d3;DEV-1","PD_organizationName":"\u05e9\u05dd \u05d4\u05d0\u05e8\u05d2\u05d5\u05df;DEVCO","PD_lang":"\u05e9\u05e4\u05d4;"},"Dims":{"dim_mnipulation":{"res":-0.0699709270797984},"dim_adishut":{"res":-0.1301587301587302},"dim_impulsive":{"res":0.6733067729083664},"dim_unResponsible":{"res":0.23469387755102025},"dim_halaklak":{"res":-0.9255319148936169},"dim_mzaSum":{"res":-0.6412913044750784,"threshold":"1.49"},"dim_sigSum":{"res":-0.1793472683962451},"dim_sumTotal":{"res":-0.41031928643566173,"threshold":"1.49"}},"Social_desirability_ReRun":"false","CompanyId":"1"}</span>
 <div class="container">
-
-	<!-- New Modern Report container (will be populated by JS) -->
-	<div id="ModernReport">
-		<div class="mr-header">כותרת גרפית / לוגו</div>
-		<section class="mr-final" id="mr-final"></section>
-		<section class="mr-details" id="mr-details"></section>
-		<section class="mr-explanations" id="mr-explanations" style="margin:8px 0 16px;">
-			<h3 style="margin:0 0 8px;">הערכת יושרה וערכי עבודה</h3>
-			<p>מערכת הערכת יושרה וערכי עבודה בודקת את נטייתו של העובד להתנהגות אתית בתחום העבודה.</p>
-			<p>התוצאות מבוססות על דיווחי הנבדק ותשובותיו לשאלונים פסיכולוגיים הבודקים את רמת מצפוניותו ואת ערכי העבודה שלו.</p>
-			<p>התוצאות מבוססות על נורמות המותאמות לאוכלוסיית המועמדים לתפקיד הנתון ונתקבלו על סמך מחקרים מדעיים שבדקו את תוקף המבחן.</p>
-		</section>
-		<section class="mr-summaries" id="mr-summaries"></section>
-		<section class="mr-grid" id="mr-grid"></section>
-		<section id="mr-dev" style="display:none; margin-top:24px; background:#fff; border:1px solid #e5e7eb; border-radius:8px; padding:12px; color:#222; position: relative; z-index: 1000; box-shadow: 0 2px 10px rgba(0,0,0,0.06);">
-			<h3>Dev only: DimMeta & Values</h3>
-			<div id="mr-dev-meta"></div>
-			<div id="mr-dev-dims" style="margin-top:8px;"></div>
-		</section>
-	</div>
 
 	<table cellpadding="0" cellspacing="0" width="850">
 		<tr>
 
 			<td>
-				<?php $companyLogo = FCPATH.'pics/company-logos/'.$companyId.'.jpg'; ?>
-				<?php if (is_file($companyLogo)) { ?>
-					<img src="<?php echo base_url('pics/company-logos/'.$companyId.'.jpg'); ?>"  style="max-height:71px;max-width:420px;"/>
-				<?php } else { ?>
-					<img src="<?php echo base_url('pics/logo-small.jpg'); ?>" />
-				<?php } ?>
-			</td>
+													<img src="http://localhost:8000/pics/logo-small.jpg" />
+							</td>
 		</tr>
 	</table>
 
@@ -136,8 +70,8 @@
 			<h3>מניפולטיביות </h3>
 			<div class="ParamRightText"><p class="ParamText">ישיר ואמיתי מסוגל להזדהות עם רגשות הזולת ולהתחשב בהם.</p></div>
 			<div class="ParamLeftText"><p class="ParamText">מרוכז בעצמו, חסר אמפטיה</p> </div>
-			<div class="SliderContainer"><img src="<?php echo base_url('pics/SliderBg.jpg'); ?>" width="390" height="50" /></div>
-			<div class="Slider_Arrow"><img src="<?php echo base_url('pics/arrow.png'); ?>" /></div>
+			<div class="SliderContainer"><img src="http://localhost:8000/pics/SliderBg.jpg" width="390" height="50" /></div>
+			<div class="Slider_Arrow"><img src="http://localhost:8000/pics/arrow.png" /></div>
 		</div>
 	</div>
 	<div style="width:850px; position:relative;">
@@ -145,8 +79,8 @@
 			<h3>אדישות:</h3>
 			<div class="ParamRightText"><p class="ParamText">רגיש למצבים מעוררי חרדה, חש במתח כאשר פועל באופן לא מקובל, "לוקח ללב".</p></div>
 			<div class="ParamLeftText"><p class="ParamText">אינו חווה מתח וחרדה, שומר על דימוי של אדם שליו ורגוע, לא חש במתח כאשר מתנהג בחוסר כנות, אדיש לנוכח מצבים מעוררי חרדה.</p></div>
-			<div class="SliderContainer"><img src="<?php echo base_url('pics/SliderBg.jpg'); ?>" width="390" height="50" /></div>
-			<div class="Slider_Arrow"><img src="<?php echo base_url('pics/arrow.png'); ?>" /></div>
+			<div class="SliderContainer"><img src="http://localhost:8000/pics/SliderBg.jpg" width="390" height="50" /></div>
+			<div class="Slider_Arrow"><img src="http://localhost:8000/pics/arrow.png" /></div>
 		</div>
 	</div>
 	<div style="width:850px; position:relative;">
@@ -154,8 +88,8 @@
 			<h3>אימפולסיביות:</h3>
 			<div class="ParamRightText"><p class="ParamText">מחושב, שקול, זהיר, דייקן, מתכנן לטווח ארוך </p></div>
 			<div class="ParamLeftText"><p class="ParamText">אימפולסיבי, שאנן, מתקשה בראיה לטווח ארוך, "נהנה לחיות את הרגע" </p></div>
-			<div class="SliderContainer"><img src="<?php echo base_url('pics/SliderBg.jpg'); ?>" width="390" height="50" /></div>
-			<div class="Slider_Arrow"><img src="<?php echo base_url('pics/arrow.png'); ?>" /></div>
+			<div class="SliderContainer"><img src="http://localhost:8000/pics/SliderBg.jpg" width="390" height="50" /></div>
+			<div class="Slider_Arrow"><img src="http://localhost:8000/pics/arrow.png" /></div>
 		</div>
 	</div>
 	<div style="width:850px; position:relative;">
@@ -163,8 +97,8 @@
 			<h3>אי לקיחת אחריות:</h3>
 			<div class="ParamRightText"><p class="ParamText">נותן אמון בזולת, אינו מאשים אחרים בטעויות, מתייחס לאחרים באופן חיובי ואופטימי. </p></div>
 			<div class="ParamLeftText"><p class="ParamText">מאשים אחרים בטעויות או בהתנהות לא מקובלת, נוטה לחוש שמתנכלים לו, נוטה לחוות את עצמו כקורבן, ביקורתי. </p></div>
-			<div class="SliderContainer"><img src="<?php echo base_url('pics/SliderBg.jpg'); ?>" width="390" height="50" /></div>
-			<div class="Slider_Arrow"><img src="<?php echo base_url('pics/arrow.png'); ?>" /></div>
+			<div class="SliderContainer"><img src="http://localhost:8000/pics/SliderBg.jpg" width="390" height="50" /></div>
+			<div class="Slider_Arrow"><img src="http://localhost:8000/pics/arrow.png" /></div>
 		</div>
 	</div>
 	<div style="width:850px; position:relative;">
@@ -172,8 +106,8 @@
 			<h3>חלקלקות בין אישית:</h3>
 			<div class="ParamRightText"><p class="ParamText">מחוספס, ישיר, נתפש כאמיתי על ידי אחרים, קל לזולת לאבחן את רגשותיו ומחשבותיו, מסוגל להיות נזפני ובוטה. </p></div>
 			<div class="ParamLeftText"><p class="ParamText">בעל קסם אישי, בעל יכולת שכנוע בקשר בין אישי, חלקלק, "שומר על הקלפים". </p></div>
-			<div class="SliderContainer"><img src="<?php echo base_url('pics/SliderBg.jpg'); ?>" width="390" height="50" /></div>
-			<div class="Slider_Arrow"><img src="<?php echo base_url('pics/arrow.png'); ?>" /></div>
+			<div class="SliderContainer"><img src="http://localhost:8000/pics/SliderBg.jpg" width="390" height="50" /></div>
+			<div class="Slider_Arrow"><img src="http://localhost:8000/pics/arrow.png" /></div>
 		</div>
 	</div>
 	<hr />
@@ -182,8 +116,8 @@
 			<h3>סגנון קבלת החלטות בפתרון דילמות אתיות:</h3>
 			<div class="ParamRightText"><p class="ParamText">מביע רמת מצפוניות נאותה, המעידה על הפנמה של ערכים ונורמות מקובלות.</p></div>
 			<div class="ParamLeftText"><p class="ParamText">מביע רמת מצפוניות נמוכה, המעידה על קושי בהפנמה של ערכים ונורמות מקובלות. לפיכך, פועל בעיקר מתוך שיקולים תועלתניים.</p></div>
-			<div class="SliderContainer"><img src="https://<?php echo $_SERVER['HTTP_HOST'];?>/pics\SliderBg.jpg" width="390" height="50" /></div>
-			<div class="Slider_Arrow"><img src="https://<?php echo $_SERVER['HTTP_HOST'];?>/pics\arrow.png" /></div>
+			<div class="SliderContainer"><img src="https://localhost:8000/pics\SliderBg.jpg" width="390" height="50" /></div>
+			<div class="Slider_Arrow"><img src="https://localhost:8000/pics\arrow.png" /></div>
 		</div>
 	</div>
 	<div style="width:850px; position:relative;">
@@ -191,8 +125,8 @@
 			<h3>סיכום והמלצה: רמת יושרה ואמינות</h3>
 			<div class="ParamRightText"><p class="ParamText">רמת יושרה מקובלת</p></div>
 			<div class="ParamLeftText"><p class="ParamText">רמת יושרה נמוכה</p></div>
-			<div class="SliderContainer"><img src="https://<?php echo $_SERVER['HTTP_HOST'];?>/pics\SliderBg.jpg" width="390" height="50" /></div>
-			<div class="Slider_Arrow"><img src="https://<?php echo $_SERVER['HTTP_HOST'];?>/pics\arrow.png" /></div>
+			<div class="SliderContainer"><img src="https://localhost:8000/pics\SliderBg.jpg" width="390" height="50" /></div>
+			<div class="Slider_Arrow"><img src="https://localhost:8000/pics\arrow.png" /></div>
 		</div>
 	</div>
 	<div style="height:250px">&nbsp;</div>
@@ -354,8 +288,6 @@
 
 
 
-
-<!-- Legacy DevOnly section removed; use #mr-dev within ModernReport -->
 
 <!-- end .container --></div>
 </body>
